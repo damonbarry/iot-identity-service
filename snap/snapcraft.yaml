@@ -29,7 +29,7 @@ parts:
   iot-identity-services:
     build-environment:
       - PATH: "$PATH:$HOME/.cargo/bin"
-      - ARCH: "$SNAPCRAFT_TARGET_ARCH"
+      - ARCH: "$CRAFT_TARGET_ARCH"
     after: [ rust-toolchain ]
     plugin: nil
     source: ./
@@ -59,7 +59,7 @@ parts:
     override-build: |
       contrib/third-party-notices.sh > THIRD-PARTY-NOTICES
       make install-deb \
-        ARCH=$SNAPCRAFT_TARGET_ARCH \
+        ARCH=$CRAFT_TARGET_ARCH \
         RELEASE=1 \
         VENDOR_LIBTSS=0 \
         PLATFORM_FEATURES=snapd \
@@ -68,7 +68,7 @@ parts:
         USER_AZIOTKS=root \
         USER_AZIOTTPM=root \
         SOCKET_DIR=/var/sockets/aziot \
-        DESTDIR=$SNAPCRAFT_PART_INSTALL
+        DESTDIR=$CRAFT_PART_INSTALL
     organize:
       usr/: .
     filesets:
@@ -79,13 +79,13 @@ parts:
       - -var
       - $exclude-symlinks
     override-prime: |
-      snapcraftctl prime
+      craftctl default
       # Recreate expected relative symlinks that were not staged from the install because they link external to the snap
       # and prevent publishing to snapcraft.
-      ln -vrfs $SNAPCRAFT_PRIME/libexec/aziot-identity-service/aziotd $SNAPCRAFT_PRIME/libexec/aziot-certd
-      ln -vrfs $SNAPCRAFT_PRIME/libexec/aziot-identity-service/aziotd $SNAPCRAFT_PRIME/libexec/aziot-identityd
-      ln -vrfs $SNAPCRAFT_PRIME/libexec/aziot-identity-service/aziotd $SNAPCRAFT_PRIME/libexec/aziot-keyd
-      ln -vrfs $SNAPCRAFT_PRIME/libexec/aziot-identity-service/aziotd $SNAPCRAFT_PRIME/libexec/aziot-tpmd
+      ln -vrfs $CRAFT_PRIME/libexec/aziot-identity-service/aziotd $CRAFT_PRIME/libexec/aziot-certd
+      ln -vrfs $CRAFT_PRIME/libexec/aziot-identity-service/aziotd $CRAFT_PRIME/libexec/aziot-identityd
+      ln -vrfs $CRAFT_PRIME/libexec/aziot-identity-service/aziotd $CRAFT_PRIME/libexec/aziot-keyd
+      ln -vrfs $CRAFT_PRIME/libexec/aziot-identity-service/aziotd $CRAFT_PRIME/libexec/aziot-tpmd
   command-chain:
     plugin: dump
     source: ./contrib
