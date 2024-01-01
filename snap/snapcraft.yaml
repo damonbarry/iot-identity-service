@@ -71,8 +71,8 @@ parts:
         DESTDIR=$CRAFT_PART_INSTALL
     organize:
       usr/: .
-    filesets:
-      exclude-symlinks: [ -libexec/aziot-identity-service/aziot-* ]
+    # filesets:
+    #   exclude-symlinks: [ -libexec/aziot-identity-service/aziot-* ]
     stage:
       - -include
       # - -lib/systemd
